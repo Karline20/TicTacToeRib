@@ -5,7 +5,8 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.widget.LinearLayout
-import android.widget.TextView
+import com.jakewharton.rxbinding2.view.RxView
+import com.owtoph.tictactoerib.databinding.LoggedOutRibBinding
 import io.reactivex.Observable
 import io.reactivex.annotations.Nullable
 
@@ -14,23 +15,25 @@ import io.reactivex.annotations.Nullable
  * Created by Karlen Legaspi
  */
 /** Top level view for [LoggedOutBuilder.LoggedOutScope].  */
-class LoggedOutView @JvmOverloads constructor(
-    context: Context?,
-    @Nullable attrs: AttributeSet? = null,
-    defStyle: Int = 0
-) :
+class LoggedOutView @JvmOverloads constructor(context: Context?, @Nullable attrs: AttributeSet? = null, defStyle: Int = 0) :
     LinearLayout(context, attrs, defStyle), LoggedOutInteractor.LoggedOutPresenter {
 
-    override fun loginName(): Observable<String> {
+        private lateinit var binding: LoggedOutRibBinding
+        override fun onFinishInflate() {
+            super.onFinishInflate()
 
-        return RxView.clicks(findViewById(R.id.login_button))
-            .map(
-                object : Function<Any?, String?>() {
-                    @Throws(Exception::class)
-                    fun apply(o: Any?): String {
-                        val textView = findViewById<View>(R.id.edit_text) as TextView
-                        return textView.text.toString()
-                    }
-                })
+            binding = LoggedOutRibBinding.bind(this)
+
+        }
+
+
+    override fun playerNames(): Observable<Pair<String, String>> {
+        return RxView.clicks(binding.loginButton)
+            .map {
+                Pair(
+                    binding.playerOneName.text.toString(),
+                    binding.playerTwoName.text.toString()
+                )
+            }
     }
 }

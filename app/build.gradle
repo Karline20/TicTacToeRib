@@ -37,6 +37,11 @@ android {
         correctErrorTypes = true
         useBuildCache = true
     }
+
+    buildFeatures{
+        viewBinding = true
+        dataBinding = true
+    }
 }
 
 dependencies {
@@ -52,9 +57,12 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    implementation "androidx.percentlayout:percentlayout:1.0.0"
 
     kapt "com.uber.rib:rib-compiler-test:$rib_version"
     implementation "com.uber.rib:rib-android:$rib_version"
+    implementation "com.uber.rib:rib-screen-stack-base:$rib_version"
+    implementation "com.uber.rib:rib-workflow:$rib_version"
     testImplementation "com.uber.rib:rib-test:$rib_version"
 
     implementation "com.google.dagger:dagger-android:$dagger_version"
@@ -62,5 +70,7 @@ dependencies {
     kapt "com.google.dagger:dagger-android-processor:$dagger_version"
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
 
-    implementation 'com.jakewharton.rxbinding4:rxbinding:4.0.0'
+    implementation 'com.jakewharton.rxbinding2:rxbinding:2.1.1'
+    implementation 'com.google.guava:guava:33.0.0-jre'
+
 }

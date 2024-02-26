@@ -3,6 +3,8 @@ package com.owtoph.tictactoerib.root.loggedout
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.owtoph.tictactoerib.R
+import com.owtoph.tictactoerib.root.RootInteractor
+import com.owtoph.tictactoerib.root.loggedin.tictactoe.TicTacToeInteractor
 import com.owtoph.tictactoerib.root.loggedout.LoggedOutBuilder.LoggedOutScope
 import com.owtoph.tictactoerib.root.loggedout.LoggedOutInteractor.LoggedOutPresenter
 import com.uber.rib.core.InteractorBaseComponent
@@ -44,6 +46,8 @@ class LoggedOutBuilder(dependency: ParentComponent) :
     }
 
     interface ParentComponent {
+
+        fun loggedOutListener(): LoggedOutInteractor.Listener
         // TODO: Define dependencies required from your parent interactor here.
     }
 
