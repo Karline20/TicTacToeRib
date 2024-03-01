@@ -1,6 +1,6 @@
 package com.owtoph.tictactoerib.root.loggedout
 
-import android.util.Log
+import com.owtoph.tictactoerib.root.UserName
 import com.uber.rib.core.Bundle
 import com.uber.rib.core.Interactor
 import com.uber.rib.core.RibInteractor
@@ -29,9 +29,11 @@ class LoggedOutInteractor : Interactor<LoggedOutInteractor.LoggedOutPresenter, L
         presenter
             .playerNames()
             .subscribe { names ->
-                names.let { pair ->
-                    if (!isEmpty(pair.first) && !isEmpty(pair.second)) {
-                        listener.requestLogin(pair.first, pair.second)
+                names.let { name ->
+                    if (!isEmpty(name.first) && !isEmpty(name.second)) {
+                        listener.requestLogin(
+                            UserName.create(name.first), UserName.create(name.second)
+                        )
                     }
                 }
             }.let {
@@ -53,7 +55,7 @@ class LoggedOutInteractor : Interactor<LoggedOutInteractor.LoggedOutPresenter, L
 
 
     interface Listener {
-        fun requestLogin(playerOne: String, playerTwo: String)
+        fun requestLogin(playerOne: UserName, playerTwo: UserName)
     }
 
 }

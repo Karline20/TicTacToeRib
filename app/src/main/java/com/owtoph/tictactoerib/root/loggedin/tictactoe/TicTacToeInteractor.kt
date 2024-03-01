@@ -1,5 +1,6 @@
 package com.owtoph.tictactoerib.root.loggedin.tictactoe
 
+import com.owtoph.tictactoerib.root.UserName
 import com.owtoph.tictactoerib.root.loggedin.tictactoe.Board.MarkerType
 import com.uber.rib.core.Bundle
 import com.uber.rib.core.Interactor
@@ -21,6 +22,8 @@ class TicTacToeInteractor :
 
     @Inject lateinit var board: Board
 
+    @Inject lateinit var listener: Listener
+
     @Inject lateinit var presenter: TicTacToePresenter
 
     private val compositeDisposable by lazy {
@@ -29,18 +32,20 @@ class TicTacToeInteractor :
 
     @Inject
     @Named("player_one")
-    lateinit var playerOne: String
+    lateinit var playerOne: UserName
 
     @Inject
     @Named("player_two")
-    lateinit var playerTwo: String
+    lateinit var playerTwo: UserName
 
     private var currentPlayer = MarkerType.CROSS
+
     override fun didBecomeActive(@Nullable savedInstanceState: Bundle?) {
         super.didBecomeActive(savedInstanceState)
+
         presenter
             .squareClicks()
-            .subscribe {xy ->
+            .subscribe { xy ->
                 if (board.cells[xy.getX()][xy.getY()] == null) {
                     if (currentPlayer == MarkerType.CROSS) {
                         board.cells[xy.getX()][xy.getY()] = MarkerType.CROSS
@@ -57,9 +62,9 @@ class TicTacToeInteractor :
                     }
                 }
                 if (board.hasWon(MarkerType.CROSS)) {
-                    presenter.setPlayerWon(playerOne)
+                    presenter.setPlayerWon(playerOne.getUserName())
                 } else if (board.hasWon(MarkerType.NOUGHT)) {
-                    presenter.setPlayerWon(playerTwo)
+                    presenter.setPlayerWon(playerTwo.getUserName())
                 } else if (board.isDraw()) {
                     presenter.setPlayerTie()
                 } else {
@@ -75,9 +80,9 @@ class TicTacToeInteractor :
 
     private fun updateCurrentPlayer() {
         if (currentPlayer == MarkerType.CROSS) {
-            presenter.setCurrentPlayerName(playerOne)
+            presenter.setCurrentPlayerName(playerOne.getUserName())
         } else {
-            presenter.setCurrentPlayerName(playerTwo)
+            presenter.setCurrentPlayerName(playerTwo.getUserName())
         }
     }
 
@@ -98,7 +103,7 @@ class TicTacToeInteractor :
          *
          * @param winner player that won, or null if it's a tie.
          */
-        fun gameWon(winner: String?)
+        fun gameWon(winner: UserName)
     }
 
 }

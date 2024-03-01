@@ -22,6 +22,7 @@ class TicTacToeView @JvmOverloads constructor(context: Context?, @Nullable attrs
         private lateinit var binding: TicTacToeRibBinding
     private lateinit var imageButtons: Array<Array<TextView>?>
     private var titleView: TextView? = null
+
     @Initializer
     override fun onFinishInflate() {
         super.onFinishInflate()

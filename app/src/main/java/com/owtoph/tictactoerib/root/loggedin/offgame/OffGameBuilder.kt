@@ -3,7 +3,11 @@ package com.owtoph.tictactoerib.root.loggedin.offgame
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.owtoph.tictactoerib.R
+import com.owtoph.tictactoerib.root.UserName
+import com.owtoph.tictactoerib.root.loggedin.GameKey
 import com.owtoph.tictactoerib.root.loggedin.ScoreStream
+import com.owtoph.tictactoerib.root.loggedin.offgame.OffGameBuilder.OffGameScope
+import com.owtoph.tictactoerib.root.loggedin.offgame.OffGameInteractor.OffGamePresenter
 import com.uber.rib.core.InteractorBaseComponent
 import com.uber.rib.core.ViewBuilder
 import dagger.Binds
@@ -13,11 +17,11 @@ import javax.inject.Named
 import javax.inject.Qualifier
 import javax.inject.Scope
 
-
 /**
  * Created by Karlen Legaspi
  */
 
+/** Builder for the [OffGameScope].  */
 class OffGameBuilder(dependency: ParentComponent) :
     ViewBuilder<OffGameView, OffGameRouter, OffGameBuilder.ParentComponent>(dependency) {
     /**
@@ -37,30 +41,26 @@ class OffGameBuilder(dependency: ParentComponent) :
         return component.offgameRouter()
     }
 
-    protected override fun inflateView(
-        inflater: LayoutInflater,
-        parentViewGroup: ViewGroup
-    ): OffGameView {
+    override fun inflateView(inflater: LayoutInflater, parentViewGroup: ViewGroup): OffGameView {
         return inflater.inflate(R.layout.off_game_rib, parentViewGroup, false) as OffGameView
     }
 
     interface ParentComponent {
-        fun listener(): OffGameInteractor.Listener
-
         @Named("player_one")
-        fun playerOne(): String
-
+        fun playerOne(): UserName
         @Named("player_two")
-        fun playerTwo(): String
-
+        fun playerTwo(): UserName
+        fun listener(): OffGameInteractor.Listener
         fun scoreStream(): ScoreStream
+        fun gameKeys(): List<GameKey>
+
     }
 
     @dagger.Module
     abstract class Module {
         @OffGameScope
         @Binds
-        abstract fun presenter(view: OffGameView): OffGameInteractor.OffGamePresenter
+        abstract fun presenter(view: OffGameView): OffGamePresenter
 
         companion object {
             @OffGameScope

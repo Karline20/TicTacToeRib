@@ -43,16 +43,14 @@ class RootActivity : RibActivity() {
 
     private fun handleDeepLink(intent: Intent) {
         val rootWorkflow = WorkflowFactory().getWorkflow(intent)
-        if (rootWorkflow != null) {
-            rootWorkflow
-                .createSingle(rootInteractor)
-                .subscribe { optional ->
-                    // Handle the optional value here
-                }.let {
-                    compositeDisposable.add(
-                        it
-                    )
-                }
+        rootInteractor?.let {
+            rootWorkflow?.createSingle(it)?.subscribe { optional ->
+                // Handle the optional value here
+            }?.let {
+                compositeDisposable.add(
+                    it
+                )
+            }
         }
     }
 

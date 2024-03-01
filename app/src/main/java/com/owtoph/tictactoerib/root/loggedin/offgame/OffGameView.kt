@@ -1,19 +1,19 @@
 package com.owtoph.tictactoerib.root.loggedin.offgame
 
-import android.R
 import android.content.Context
 import android.util.AttributeSet
-import android.view.View
+import android.view.LayoutInflater
 import android.widget.Button
 import android.widget.LinearLayout
-import android.widget.TextView
 import com.jakewharton.rxbinding2.view.RxView
+import com.owtoph.tictactoerib.R
 import com.owtoph.tictactoerib.databinding.OffGameRibBinding
+import com.owtoph.tictactoerib.root.UserName
+import com.owtoph.tictactoerib.root.loggedin.GameKey
 import com.owtoph.tictactoerib.root.loggedin.offgame.OffGameInteractor.OffGamePresenter
 import com.uber.rib.core.Initializer
 import io.reactivex.Observable
 import java.util.Locale
-
 
 /**
  * Created by Karlen Legaspi
@@ -31,11 +31,12 @@ class OffGameView @JvmOverloads constructor(context: Context?, attrs: AttributeS
         super.onFinishInflate()
 
         binding = OffGameRibBinding.bind(this)
+
     }
 
-    override fun setPlayerNames(playerOne: String, playerTwo: String) {
-        binding.playerOneName.text = playerOne
-        binding.playerTwoName.text = playerTwo
+    override fun setPlayerNames(playerOne: UserName, playerTwo: UserName) {
+        binding.playerOneName.text = playerOne.getUserName()
+        binding.playerTwoName.text = playerTwo.getUserName()
     }
 
     override fun setScores(playerOneScore: Int, playerTwoScore: Int) {
@@ -45,7 +46,15 @@ class OffGameView @JvmOverloads constructor(context: Context?, attrs: AttributeS
             String.format(Locale.getDefault(), "Win Count: %d", playerTwoScore)
     }
 
-    override fun startGameRequest(): Observable<Any> {
-        return RxView.clicks(binding.startGameButton)
+    override fun startGameRequest(gameKeys: List<GameKey>): Observable<GameKey> {
+        val observables: MutableList<Observable<GameKey>> = ArrayList<Observable<GameKey>>()
+        for (gameKey in gameKeys) {
+            val button = LayoutInflater.from(context).inflate(R.layout.game_button, this, false) as Button
+            button.text = gameKey.gameName()
+            val observable: Observable<GameKey> = RxView.clicks(button).map { gameKey }
+            observables.add(observable)
+            addView(button)
+        }
+        return Observable.merge(observables)
     }
 }

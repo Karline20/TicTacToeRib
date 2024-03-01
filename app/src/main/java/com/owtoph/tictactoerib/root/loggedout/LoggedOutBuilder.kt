@@ -3,14 +3,13 @@ package com.owtoph.tictactoerib.root.loggedout
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.owtoph.tictactoerib.R
-import com.owtoph.tictactoerib.root.RootInteractor
-import com.owtoph.tictactoerib.root.loggedin.tictactoe.TicTacToeInteractor
 import com.owtoph.tictactoerib.root.loggedout.LoggedOutBuilder.LoggedOutScope
 import com.owtoph.tictactoerib.root.loggedout.LoggedOutInteractor.LoggedOutPresenter
 import com.uber.rib.core.InteractorBaseComponent
 import com.uber.rib.core.ViewBuilder
 import dagger.Binds
 import dagger.BindsInstance
+import dagger.Component
 import dagger.Provides
 import javax.inject.Qualifier
 import javax.inject.Scope
@@ -20,16 +19,15 @@ import javax.inject.Scope
  * Created by Karlen Legaspi
  */
 /** Builder for the [LoggedOutScope].  */
+/** Builder for the [LoggedOutScope].  */
 class LoggedOutBuilder(dependency: ParentComponent) :
     ViewBuilder<LoggedOutView, LoggedOutRouter, LoggedOutBuilder.ParentComponent>(dependency) {
-
     /**
      * Builds a new [LoggedOutRouter].
      *
      * @param parentViewGroup parent view group that this router's view will be added to.
      * @return a new [LoggedOutRouter].
      */
-
     fun build(parentViewGroup: ViewGroup): LoggedOutRouter {
         val view = createView(parentViewGroup)
         val interactor = LoggedOutInteractor()
@@ -46,9 +44,7 @@ class LoggedOutBuilder(dependency: ParentComponent) :
     }
 
     interface ParentComponent {
-
-        fun loggedOutListener(): LoggedOutInteractor.Listener
-        // TODO: Define dependencies required from your parent interactor here.
+        fun listener(): LoggedOutInteractor.Listener
     }
 
     @dagger.Module
@@ -60,7 +56,7 @@ class LoggedOutBuilder(dependency: ParentComponent) :
         companion object {
             @LoggedOutScope
             @Provides
-            internal fun router(
+            fun router(
                 component: Component, view: LoggedOutView, interactor: LoggedOutInteractor
             ): LoggedOutRouter {
                 return LoggedOutRouter(view, interactor, component)

@@ -3,6 +3,7 @@ package com.owtoph.tictactoerib.root.loggedin.tictactoe
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.owtoph.tictactoerib.R
+import com.owtoph.tictactoerib.root.UserName
 import com.uber.rib.core.InteractorBaseComponent
 import com.uber.rib.core.ViewBuilder
 import dagger.Binds
@@ -27,7 +28,7 @@ class TicTacToeBuilder(dependency: ParentComponent) :
      * @return a new [TicTacToeRouter].
      */
     fun build(parentViewGroup: ViewGroup): TicTacToeRouter {
-        val view: TicTacToeView = createView(parentViewGroup!!)
+        val view: TicTacToeView = createView(parentViewGroup)
         val interactor = TicTacToeInteractor()
         val component: Component = DaggerTicTacToeBuilder_Component.builder()
             .parentComponent(dependency)
@@ -37,7 +38,7 @@ class TicTacToeBuilder(dependency: ParentComponent) :
         return component.tictactoeRouter()
     }
 
-    protected override fun inflateView(
+    override fun inflateView(
         inflater: LayoutInflater,
         parentViewGroup: ViewGroup
     ): TicTacToeView {
@@ -49,10 +50,10 @@ class TicTacToeBuilder(dependency: ParentComponent) :
         fun ticTacToeListener(): TicTacToeInteractor.Listener
 
         @Named("player_one")
-        fun playerOne(): String
+        fun playerOne(): UserName
 
         @Named("player_two")
-        fun playerTwo(): String
+        fun playerTwo(): UserName
     }
 
     @dagger.Module

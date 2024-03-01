@@ -22,6 +22,8 @@ import javax.inject.Scope
  */
 /** Builder for the [RootScope].  */
 /** Builder for the [RootScope].  */
+
+/** Builder for the [RootScope].  */
 class RootBuilder(dependency: ParentComponent) :
     ViewBuilder<RootView, RootRouter, RootBuilder.ParentComponent>(dependency) {
     /**
@@ -33,7 +35,7 @@ class RootBuilder(dependency: ParentComponent) :
     fun build(parentViewGroup: ViewGroup): RootRouter {
         val view = createView(parentViewGroup)
         val interactor = RootInteractor()
-        val component: Component = DaggerRootBuilder_Component.builder()
+        val component = DaggerRootBuilder_Component.builder()
             .parentComponent(dependency)
             .view(view)
             .interactor(interactor)

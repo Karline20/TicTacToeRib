@@ -4,27 +4,28 @@ import android.view.ViewGroup
 import com.owtoph.tictactoerib.root.loggedin.offgame.OffGameBuilder
 import com.owtoph.tictactoerib.root.loggedin.offgame.OffGameRouter
 import com.owtoph.tictactoerib.root.loggedin.tictactoe.TicTacToeBuilder
-import com.owtoph.tictactoerib.root.loggedin.tictactoe.TicTacToeRouter
 import com.uber.rib.core.Router
+import com.uber.rib.core.ViewRouter
 
 
 /**
  * Created by Karlen Legaspi
  */
 /** Adds and removes children of [LoggedInBuilder.LoggedInScope].  */
+/** Adds and removes children of [LoggedInBuilder.LoggedInScope].  */
 class LoggedInRouter internal constructor(
     interactor: LoggedInInteractor,
-    component: LoggedInBuilder.Component,
+    component: LoggedInBuilder.Component?,
     private val parentView: ViewGroup,
     private val offGameBuilder: OffGameBuilder,
     private val ticTacToeBuilder: TicTacToeBuilder
 ) : Router<LoggedInInteractor>(interactor, component) {
     private var offGameRouter: OffGameRouter? = null
-    private var ticTacToeRouter: TicTacToeRouter? = null
+    private var gameRouter: ViewRouter<*, *>? = null
     override fun willDetach() {
         super.willDetach()
         detachOffGame()
-        detachTicTacToe()
+        detachGame()
     }
 
     fun attachOffGame() {
@@ -41,17 +42,17 @@ class LoggedInRouter internal constructor(
         }
     }
 
-    fun attachTicTacToe() {
-        ticTacToeRouter = ticTacToeBuilder.build(parentView)
-        attachChild(ticTacToeRouter!!)
-        parentView.addView(ticTacToeRouter!!.view)
+    fun attachGame(gameProvider: GameProvider) {
+        gameRouter = gameProvider.viewRouter(parentView)
+        parentView.addView(gameRouter!!.view)
+        attachChild(gameRouter!!)
     }
 
-    fun detachTicTacToe() {
-        if (ticTacToeRouter != null) {
-            detachChild(ticTacToeRouter!!)
-            parentView.removeView(ticTacToeRouter!!.view)
-            ticTacToeRouter = null
+    fun detachGame() {
+        if (gameRouter != null) {
+            detachChild(gameRouter!!)
+            parentView.removeView(gameRouter!!.view)
+            gameRouter = null
         }
     }
 }

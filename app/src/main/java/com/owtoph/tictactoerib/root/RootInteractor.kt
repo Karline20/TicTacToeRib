@@ -21,7 +21,7 @@ class RootInteractor : Interactor<RootInteractor.RootPresenter, RootRouter>(), R
         router.attachLoggedOut()
     }
     inner class LoggedOutListener : LoggedOutInteractor.Listener {
-        override fun requestLogin(playerOne: String, playerTwo: String) {
+        override fun requestLogin(playerOne: UserName , playerTwo: UserName ) {
             // Switch to logged in. Let’s just ignore userName for now.
 
             router.detachLoggedOut()

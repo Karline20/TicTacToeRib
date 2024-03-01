@@ -1,8 +1,8 @@
 package com.owtoph.tictactoerib.root.loggedin
 
 import com.google.common.collect.ImmutableMap
-
 import com.jakewharton.rxrelay2.BehaviorRelay
+import com.owtoph.tictactoerib.root.UserName
 import io.reactivex.Observable
 
 
@@ -10,16 +10,17 @@ import io.reactivex.Observable
  * Created by Karlen Legaspi
  */
 
-class MutableScoreStream(playerOne: String, playerTwo: String) : ScoreStream {
-    private val scoresRelay = BehaviorRelay.create<ImmutableMap<String, Int>>()
+
+class MutableScoreStream(playerOne: UserName, playerTwo: UserName) : ScoreStream {
+    private val scoresRelay = BehaviorRelay.create<ImmutableMap<UserName, Int>>()
 
     init {
         scoresRelay.accept(ImmutableMap.of(playerOne, 0, playerTwo, 0))
     }
 
-    fun addVictory(userName: String) {
+    fun addVictory(userName: UserName) {
         val currentScores = scoresRelay.value!!
-        val newScoreMapBuilder = ImmutableMap.Builder<String, Int>()
+        val newScoreMapBuilder = ImmutableMap.Builder<UserName, Int>()
         for ((key, value) in currentScores) {
             if (key == userName) {
                 newScoreMapBuilder.put(key, value + 1)
@@ -30,7 +31,7 @@ class MutableScoreStream(playerOne: String, playerTwo: String) : ScoreStream {
         scoresRelay.accept(newScoreMapBuilder.build())
     }
 
-    override fun scores(): Observable<ImmutableMap<String, Int>> {
+    override fun scores(): Observable<ImmutableMap<UserName, Int>> {
         return scoresRelay.hide()
     }
 }
