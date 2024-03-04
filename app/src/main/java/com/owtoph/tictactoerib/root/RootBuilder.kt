@@ -21,9 +21,6 @@ import javax.inject.Scope
  * Created by Karlen Legaspi
  */
 /** Builder for the [RootScope].  */
-/** Builder for the [RootScope].  */
-
-/** Builder for the [RootScope].  */
 class RootBuilder(dependency: ParentComponent) :
     ViewBuilder<RootView, RootRouter, RootBuilder.ParentComponent>(dependency) {
     /**
@@ -90,7 +87,6 @@ class RootBuilder(dependency: ParentComponent) :
         interface Builder {
             @BindsInstance
             fun interactor(interactor: RootInteractor): Builder
-
             @BindsInstance
             fun view(view: RootView): Builder
             fun parentComponent(component: ParentComponent): Builder

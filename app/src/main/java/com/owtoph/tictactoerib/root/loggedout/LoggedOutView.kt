@@ -1,13 +1,9 @@
 package com.owtoph.tictactoerib.root.loggedout
 
-import android.R
 import android.content.Context
 import android.util.AttributeSet
-import android.view.View
 import android.widget.LinearLayout
-import com.jakewharton.rxbinding2.view.RxView
 import com.owtoph.tictactoerib.databinding.LoggedOutRibBinding
-import io.reactivex.Observable
 import io.reactivex.annotations.Nullable
 
 
@@ -26,14 +22,4 @@ class LoggedOutView @JvmOverloads constructor(context: Context?, @Nullable attrs
 
         }
 
-
-    override fun playerNames(): Observable<Pair<String, String>> {
-        return RxView.clicks(binding.loginButton)
-            .map {
-                Pair(
-                    binding.playerOneName.text.toString(),
-                    binding.playerTwoName.text.toString()
-                )
-            }
-    }
 }

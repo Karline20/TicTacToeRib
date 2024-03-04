@@ -20,6 +20,7 @@ import javax.inject.Scope
  */
 /** Builder for the [LoggedOutScope].  */
 /** Builder for the [LoggedOutScope].  */
+/** Builder for the [LoggedOutScope].  */
 class LoggedOutBuilder(dependency: ParentComponent) :
     ViewBuilder<LoggedOutView, LoggedOutRouter, LoggedOutBuilder.ParentComponent>(dependency) {
     /**
@@ -66,8 +67,7 @@ class LoggedOutBuilder(dependency: ParentComponent) :
 
     @LoggedOutScope
     @dagger.Component(modules = [Module::class], dependencies = [ParentComponent::class])
-    interface Component : InteractorBaseComponent<LoggedOutInteractor>,
-        BuilderComponent {
+    interface Component : InteractorBaseComponent<LoggedOutInteractor>, BuilderComponent {
         @dagger.Component.Builder
         interface Builder {
             @BindsInstance

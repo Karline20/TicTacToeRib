@@ -18,21 +18,21 @@ class RootInteractor : Interactor<RootInteractor.RootPresenter, RootRouter>(), R
 
     override fun didBecomeActive(savedInstanceState: Bundle?) {
         super.didBecomeActive(savedInstanceState)
-        router.attachLoggedOut()
+        //router.attachLoggedOut()
     }
-    inner class LoggedOutListener : LoggedOutInteractor.Listener {
-        override fun requestLogin(playerOne: UserName , playerTwo: UserName ) {
+
+
+    internal inner class LoggedOutListener : LoggedOutInteractor.Listener {
+        fun requestLogin() {
             // Switch to logged in. Let’s just ignore userName for now.
-
             router.detachLoggedOut()
-            router.attachLoggedIn(playerOne, playerTwo)
-
+            router.attachLoggedIn()
         }
-
     }
-
 
 
     /** Presenter interface implemented by this RIB's view.  */
-    interface RootPresenter
+    interface RootPresenter{
+
+    }
 }
